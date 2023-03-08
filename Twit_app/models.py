@@ -118,3 +118,7 @@ class Comment(models.Model):
 class File(models.Model):
     post=models.ForeignKey(Post, on_delete=models.CASCADE, blank=True)
     upload=models.FileField(upload_to ='static', null=True, blank=True)
+
+
+
+
