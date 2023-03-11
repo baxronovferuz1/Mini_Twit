@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  database:
+    image: postgres:14.5
+    restart: on-failure
+    ports:
+      - "5555:5432"
+    volumes:
+      - twitter_db:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_PORT: ${DB_PORT}
+      POSTGRES_HOST: ${DB_HOST}
+
+  app:
+    build:
+      context: .
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    command: sh run.sh
+    volumes:
+      - .:/app
+
+volumes:
+  twitter_db:
