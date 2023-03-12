@@ -8,7 +8,7 @@ from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode as uid_decoder
 from django.utils.translation import gettext_lazy as _
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from rest_framework import serializers, exceptions
 from rest_framework.exceptions import ValidationError
 from .models import User
@@ -122,7 +122,7 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
 
         # Decode the uidb64 to uid to get User object
         try:
-            uid = force_text(uid_decoder(attrs['uid']))
+            uid = force_str(uid_decoder(attrs['uid']))
             self.user = User._default_manager.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             raise ValidationError({'uid': ['Invalid value']})
