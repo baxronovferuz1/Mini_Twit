@@ -2,6 +2,7 @@ version: '3'
 
 services:
   database:
+    container_name: my_db
     image: postgres:14.5
     restart: on-failure
     ports:
@@ -16,12 +17,14 @@ services:
       POSTGRES_HOST: ${DB_HOST}
 
   app:
+    container_name: app
     build:
       context: .
+      dockerfile: Dockerfile
     env_file:
       - .env
     ports:
-      - "8000:8000"
+      - "8888:8000"
     depends_on:
       - database
     command: sh run.sh
